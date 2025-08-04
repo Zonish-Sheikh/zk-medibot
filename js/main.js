@@ -20,3 +20,18 @@ function dismissNotif(btn) {
   dismissed.push(li.textContent.replace('Dismiss', '').trim());
   localStorage.setItem('dismissedNotifs', JSON.stringify(dismissed));
 }
+
+// Reset notifications: clears localStorage and shows all notifications
+function resetNotifications() {
+  localStorage.removeItem('dismissedNotifs');
+  
+  document.querySelectorAll('.notifications li').forEach(li => {
+    li.style.display = 'list-item';
+    const btn = li.querySelector('button');
+    if (btn) btn.disabled = false;
+  });
+}
+
+// Attach event listener to the reset button
+document.getElementById('resetNotifBtn').addEventListener('click', resetNotifications);
+
