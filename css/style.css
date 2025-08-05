@@ -1,3 +1,4 @@
+/* GENERAL */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f9fafb;
@@ -26,6 +27,7 @@ header p {
   font-size: 1.1rem;
 }
 
+/* NAV BAR */
 .main-nav {
   background-color: #edf2f7;
   border-bottom: 1px solid #cbd5e0;
@@ -59,13 +61,29 @@ header p {
 }
 
 /* MAIN CONTENT */
-main {
-  max-width: 700px;
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 900px;
   margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
   background: white;
-  padding: 30px 40px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgb(160 174 192 / 0.3);
+  padding: 24px 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
 }
 
 section {
@@ -127,5 +145,15 @@ footer {
   .main-nav li {
     display: block;
     margin: 8px 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid > .card:nth-child(3) {
+    grid-column: span 2; /* Make Chat Activity take full width */
   }
 }

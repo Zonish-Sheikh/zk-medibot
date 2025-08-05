@@ -28,34 +28,31 @@
     </nav>
 
     <!---MAIN CONTENT---------------------------------->
-
-<main>
-    <!---HEALTH SUMMARY SECTION---------------------------------->
-    <section class="summary">
+    <main class="dashboard-grid">
+        
+    <!-- HEALTH SUMMARY CARD -->
+     <section class="card">
         <h2>Health Summary</h2>
         <p>No conflicts detected</p>
         <p>Next checkup: 15 Aug 2025</p>
     </section>
-
-    <!---NOTIFICATIONS SECTION---------------------------------->
-    <section class="notifications">
-    <h2>Notifications</h2>
-    <ul>
-        <li>Remember to update your medication list. <button onclick="dismissNotif(this)">Dismiss</button></li>
-        <li>New vaccine schedule available. <button onclick="dismissNotif(this)">Dismiss</button></li>
-    </ul>
-    <button id="resetNotifBtn">Reset Notifications</button>
-</section>
-
-
-    <!---RECENT CHAT ACTIVITY SECTION---------------------------------->
-    <section class="recent-chat">
+    
+    <!-----NOTIFICATIONS CARD -------------------------->
+     <section class="card">
+        <h2>Notifications</h2>
+        <ul>
+            <li>Remember to update your medication list. <button onclick="dismissNotif(this)">Dismiss</button></li>
+            <li>New vaccine schedule available. <button onclick="dismissNotif(this)">Dismiss</button></li>
+        </ul>
+        <button id="resetNotifBtn">Reset Notifications</button>
+    </section>
+    
+    <!-----RECENT CHAT CARD ---------------------------->
+     <section class="card">
         <h2>Recent Chat Activity</h2>
-        <p><em>“Can I drink wine with my antibiotics?”</em> - Answered</p>
+        <p><em>“Can I drink wine with my antibiotics?”</em> – Answered</p>
     </section>
 </main>
-
-
 
 <!---FOOTER---------------------------------->
  <footer>
