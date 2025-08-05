@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZK-MEDIBOT DASHBOARD</title>
-  <link rel="stylesheet" href="css/style.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZK-MEDIBOT DASHBOARD</title>
+    <!--GOOGLE FONT LINK ------------------------->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
     <!---HEADER---------------------------------->
@@ -14,7 +18,7 @@
         <h1>ZK-Medibot</h1>
         <p>Your Privacy-First Health Assistant</p>
     </header>
-    
+
     <!----NAV BAR---------------------------------->
     <nav class="main-nav">
         <ul>
@@ -27,40 +31,54 @@
         </ul>
     </nav>
 
-    <!---MAIN CONTENT---------------------------------->
+    <!----MAIN CONTENT---------------------------------->
+
     <main class="dashboard-grid">
-        
-    <!-- HEALTH SUMMARY CARD -->
-     <section class="card">
-        <h2>Health Summary</h2>
-        <p>No conflicts detected</p>
-        <p>Next checkup: 15 Aug 2025</p>
-    </section>
-    
-    <!-----NOTIFICATIONS CARD -------------------------->
-     <section class="card">
-        <h2>Notifications</h2>
-        <ul>
-            <li>Remember to update your medication list. <button onclick="dismissNotif(this)">Dismiss</button></li>
-            <li>New vaccine schedule available. <button onclick="dismissNotif(this)">Dismiss</button></li>
-        </ul>
-        <button id="resetNotifBtn">Reset Notifications</button>
-    </section>
-    
-    <!-----RECENT CHAT CARD ---------------------------->
-     <section class="card">
-        <h2>Recent Chat Activity</h2>
-        <p><em>“Can I drink wine with my antibiotics?”</em> – Answered</p>
-    </section>
-</main>
 
-<!---FOOTER---------------------------------->
- <footer>
-    <p>© 2025 ZK-Medibot. All rights reserved.</p>
-</footer>
+        <!--- HEALTH SUMMARY CARD ------------------------------>
+        <section class="card health-card">
+            <h2>Health Summary</h2>
+            <div class="health-ring-container">
+                <svg class="progress-ring" width="100" height="100">
+                    <circle class="progress-ring-bg" cx="50" cy="50" r="40" />
+                    <circle class="progress-ring-circle" cx="50" cy="50" r="40" />
+                </svg>
+                <div class="health-score-text">84%</div>
+            </div>
+            <p>Next checkup: <strong>15 Aug 2025</strong></p>
+            <button class="zk-button">View Full Report</button>
+        </section>
 
-<script src="js/main.js"></script>
+        <!--- NOTIFICATIONS CARD --------------------------------->
+        <section class="card notifications">
+            <h2>Notifications</h2>
+            <ul>
+                <li><span class="alert-dot"></span> <strong>Reminder:</strong> Update your medication list. <button
+                        onclick="dismissNotif(this)">Dismiss</button></li>
+                <li class="alert"><span class="alert-dot"></span> <strong>Alert:</strong> New vaccine schedule
+                    available. <button onclick="dismissNotif(this)">Dismiss</button></li>
+            </ul>
+            <button id="resetNotifBtn">Reset Notifications</button>
+        </section>
+
+        <!-- RECENT CHAT CARD ----------------------------------->
+        <section class="card">
+            <h2>Recent Chat Activity</h2>
+            <p><em>“Can I drink wine with my antibiotics?”</em> – Answered <span class="chat-time">· 2 days ago</span>
+            </p>
+            <button class="zk-button">Continue Chat</button>
+        </section>
+
+    </main>
+
+
+    <!---FOOTER---------------------------------->
+    <footer>
+        <p>© 2025 ZK-Medibot. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
 
 </body>
-</html>
 
+</html>
