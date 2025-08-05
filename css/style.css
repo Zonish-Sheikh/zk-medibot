@@ -280,3 +280,85 @@ footer {
   font-size: 0.9rem;
   margin-left: 8px;
 }
+
+/* Sticky nav */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Notification badge next to Notifications header */
+.notifications > h2 {
+  position: relative;
+  display: inline-block;
+  padding-right: 30px;
+}
+
+.notifications > h2::after {
+  content: attr(data-count);
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background-color: var(--color-accent);
+  color: white;
+  font-weight: 700;
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  display: none; 
+}
+
+/* Show badge if count > 0 */
+.notifications[data-count]:not([data-count="0"]) > h2::after {
+  display: inline-block;
+}
+
+/* Fade-in slide-up animation */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card.fade-in {
+  animation: fadeSlideUp 0.7s ease forwards;
+  opacity: 0;
+}
+
+/* Recent Chat card polish */
+.card p em {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-primary-dark);
+}
+
+.card p .chat-time {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-left: 8px;
+  font-style: normal;
+}
+
+.card .zk-button {
+  margin-top: 12px;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+/* Responsive tweaks for sticky nav */
+@media (max-width: 600px) {
+  .main-nav li {
+    display: block;
+    margin: 8px 0;
+  }
+}
