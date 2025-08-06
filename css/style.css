@@ -1,19 +1,20 @@
 :root {
-  --color-primary: #3b82f6;        
-  --color-primary-dark: #1e40af;     
-  --color-accent: #f59e0b;           
-  --color-bg: #f9fafb;               
-  --color-card-bg: #ffffff;          
-  --color-text-primary: #1f2937;      
-  --color-text-secondary: #4b5563;    
-  --color-border: #e5e7eb;            
+  --color-primary: #3b82f6;
+  --color-primary-dark: #1e40af;
+  --color-accent: #f59e0b;
+  --color-bg: #f9fafb;
+  --color-card-bg: #ffffff;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #4b5563;
+  --color-border: #e5e7eb;
 
   --shadow-default: rgba(0, 0, 0, 0.04);
-  --shadow-hover: rgba(0, 0, 0, 0.08);
+  --shadow-hover: rgba(0, 0, 0, 0.12);
 
   --font-primary: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* BODY */
 body {
   font-family: var(--font-primary);
   background-color: var(--color-bg);
@@ -22,8 +23,18 @@ body {
   padding: 20px;
   font-size: 16px;
   line-height: 1.7;
+  /* Fade-in for entire page */
+  opacity: 0;
+  animation: fadeInPage 0.5s ease forwards;
 }
 
+@keyframes fadeInPage {
+  to {
+    opacity: 1;
+  }
+}
+
+/* HEADER */
 header {
   text-align: center;
   padding-bottom: 24px;
@@ -53,6 +64,20 @@ header p {
   margin-bottom: 30px;
   text-align: center;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add shadow on sticky when scrolling */
+.main-nav.sticky-active {
+  box-shadow: 0 4px 10px rgba(30, 64, 175, 0.15);
+}
+
+.main-nav:hover,
+.main-nav:focus-within {
+  background-color: #e0e7ff; 
 }
 
 .main-nav ul {
@@ -71,21 +96,24 @@ header p {
   color: var(--color-primary);
   font-weight: 600;
   font-size: 1.1rem;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
+  outline-offset: 2px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
 .main-nav a:hover,
 .main-nav a:focus {
   color: var(--color-primary-dark);
+  transform: translateY(-2px);
   outline: none;
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
-.main-nav a:focus,
-.notifications button:focus,
-.zk-button:focus,
-.card:focus-within {
+/* Focus visible for accessibility */
+.main-nav a:focus-visible {
   outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 /* MAIN CONTENT */
@@ -106,13 +134,21 @@ header p {
   box-shadow: 0 4px 12px var(--shadow-default);
   padding: 24px 28px;
   margin: 16px 0;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-  will-change: transform;
+  transition: box-shadow 0.3s ease, transform 0.2s ease, opacity 0.5s ease, transform 0.5s ease;
+  will-change: transform, opacity;
+  cursor: default;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card.fade-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card:hover,
 .card:focus-within {
-  box-shadow: 0 6px 18px var(--shadow-hover);
+  box-shadow: 0 8px 24px var(--shadow-hover);
   transform: translateY(-4px);
   outline: none;
 }
@@ -132,7 +168,7 @@ section {
 
 section h2 {
   color: var(--color-primary);
-  border-bottom: 2px solid #bfdbfe; 
+  border-bottom: 2px solid #bfdbfe;
   padding-bottom: 8px;
   margin-bottom: 18px;
   font-weight: 700;
@@ -152,15 +188,32 @@ section h2 {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  opacity: 1;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+  cursor: default;
 }
 
 .notifications li.alert {
-  color: #b45309;            
+  color: #b45309;
   font-weight: 600;
   border-left: 4px solid var(--color-accent);
   padding-left: 12px;
 }
 
+.notifications li.fade-out {
+  opacity: 0;
+  transform: translateX(50px);
+  pointer-events: none;
+}
+
+/* Add subtle pop on hover for notifications */
+.notifications li:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Dot for alerts */
 .alert-dot {
   display: inline-block;
   width: 10px;
@@ -182,8 +235,9 @@ section h2 {
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
   margin-left: 12px;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.4);
 }
 
 .notifications button:hover,
@@ -193,11 +247,13 @@ section h2 {
   background-color: var(--color-primary-dark);
   outline: none;
   transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(30, 64, 175, 0.6);
 }
 
 .notifications button:active,
 .zk-button:active {
   transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(30, 64, 175, 0.7);
 }
 
 /* FOOTER */
@@ -212,153 +268,113 @@ footer {
 /* Responsive */
 @media (max-width: 600px) {
   main {
-    padding: 20px;
-    margin: 20px;
+    padding: 10px;
+    margin: 10px;
   }
 
   .main-nav li {
     display: block;
     margin: 8px 0;
   }
-}
 
-@media (min-width: 768px) {
+  .main-nav ul {
+    padding: 0;
+  }
+
   .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    margin: 20px 10px;
+    gap: 18px;
   }
 
-  .dashboard-grid > .card:nth-child(3) {
-    grid-column: span 2;
+  .card {
+    padding: 20px;
+    margin: 8px 0;
+    border-radius: 12px;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  header p {
+    font-size: 1rem;
+  }
+
+  .notifications button,
+  .zk-button {
+    padding: 12px 16px;
+    font-size: 1rem;
   }
 }
 
-/* HEALTH RING STYLES */
-.health-ring-container {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  margin-bottom: 16px;
-}
-
-.progress-ring {
-  transform: rotate(-90deg);
-}
-
-.progress-ring-bg,
-.progress-ring-circle {
-  fill: none;
-  stroke-width: 10;
-  cx: 50;
-  cy: 50;
-  r: 40;
-}
-
-.progress-ring-bg {
-  stroke: #e5e7eb;
-}
-
+/* HEALTH RING ANIMATION */
 .progress-ring-circle {
   stroke: var(--color-primary);
-  stroke-dasharray: 251.2;
-  stroke-dashoffset: calc(251.2 - (251.2 * 84) / 100); /* 84% Score */
-  transition: stroke-dashoffset 0.35s;
+  stroke-width: 8;
   stroke-linecap: round;
+  fill: transparent;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 251.2; 
+  stroke-dashoffset: 251.2;
+  animation: progressAnimation 2s forwards ease-out;
 }
 
+@keyframes progressAnimation {
+  to {
+    stroke-dashoffset: 40;
+  }
+}
+
+/* Background ring behind the progress circle */
+.progress-ring-bg {
+  fill: transparent;
+  stroke: #dbeafe; 
+  stroke-width: 8;
+}
+
+/* Main progress ring with glow */
+.progress-ring-circle {
+  fill: transparent;
+  stroke: var(--color-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2; 
+  stroke-dashoffset: 40;   
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.7));
+  transition: stroke-dashoffset 1.5s ease-out;
+}
+
+/* Centered health score text */
 .health-score-text {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.2rem;
   font-weight: 700;
+  font-size: 1.4rem;
   color: var(--color-primary-dark);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.02em; 
 }
 
-.chat-time {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-  margin-left: 8px;
+/* hover effect on health ring container */
+.health-ring-container:hover .progress-ring-circle {
+  stroke: var(--color-primary-dark);
+  filter: drop-shadow(0 0 6px rgba(30, 64, 175, 0.8));
 }
 
-/* Sticky nav */
-.main-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
 
-/* Notification badge next to Notifications header */
-.notifications > h2 {
-  position: relative;
-  display: inline-block;
-  padding-right: 30px;
-}
-
-.notifications > h2::after {
-  content: attr(data-count);
-  position: absolute;
-  top: 2px;
-  right: 0;
-  background-color: var(--color-accent);
-  color: white;
-  font-weight: 700;
-  font-size: 0.75rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 20px;
-  display: none; 
-}
-
-/* Show badge if count > 0 */
-.notifications[data-count]:not([data-count="0"]) > h2::after {
-  display: inline-block;
-}
-
-/* Fade-in slide-up animation */
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
+@keyframes pulse {
+  0%, 100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
   }
 }
 
-.card.fade-in {
-  animation: fadeSlideUp 0.7s ease forwards;
-  opacity: 0;
-}
-
-/* Recent Chat card polish */
-.card p em {
-  font-style: italic;
-  font-size: 1.05rem;
-  color: var(--color-primary-dark);
-}
-
-.card p .chat-time {
-  color: var(--color-text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-left: 8px;
-  font-style: normal;
-}
-
-.card .zk-button {
-  margin-top: 12px;
-  width: 100%;
-  font-size: 1.1rem;
-}
-
-/* Responsive tweaks for sticky nav */
-@media (max-width: 600px) {
-  .main-nav li {
-    display: block;
-    margin: 8px 0;
-  }
-}
