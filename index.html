@@ -31,59 +31,55 @@
         </ul>
     </nav>
 
-    <!----MAIN CONTENT---------------------------------->
-    <main class="dashboard-grid">
+      <!-- MAIN -->
+  <main class="dashboard-grid">
+    <!-- HEALTH SUMMARY CARD -->
+    <section class="card health-card" aria-label="Health summary">
+      <h2>Health Summary</h2>
+      <div class="health-ring-container" aria-live="polite">
+        <svg class="progress-ring" width="120" height="120" viewBox="0 0 100 100" role="img" aria-label="Health score">
+          <circle class="progress-ring-bg" cx="50" cy="50" r="40" />
+          <circle class="progress-ring-circle" cx="50" cy="50" r="40" />
+        </svg>
+        <div class="health-score-text" id="healthScoreText">0%</div>
+      </div>
+      <p>Next checkup: <strong>15 Aug 2025</strong></p>
+      <button type="button" class="zk-button" aria-label="View full health report">View Full Report</button>
+    </section>
 
-        <!--- HEALTH SUMMARY CARD ------------------------------>
+    <!-- NOTIFICATIONS -->
+    <section class="card notifications" data-count="2" aria-live="polite">
+      <h2>Notifications</h2>
+      <ul>
+        <li>
+          <span class="alert-dot" aria-hidden="true"></span>
+          <strong>Reminder:</strong> Update your medication list.
+          <button type="button" onclick="dismissNotif(this)" aria-label="Dismiss reminder notification">Dismiss</button>
+        </li>
+        <li class="alert">
+          <span class="alert-dot" aria-hidden="true"></span>
+          <strong>Alert:</strong> New vaccine schedule available.
+          <button type="button" onclick="dismissNotif(this)" aria-label="Dismiss alert notification">Dismiss</button>
+        </li>
+      </ul>
+      <button id="resetNotifBtn" type="button" aria-label="Reset all notifications">Reset Notifications</button>
+    </section>
 
-        <section class="card health-card" aria-label="Health summary">
-            <h2>Health Summary</h2>
-            <div class="health-ring-container" aria-live="polite" aria-atomic="true"
-                style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px;">
-                <svg class="progress-ring" width="120" height="120" role="img" aria-label="Health score 84 percent"
-                    viewBox="0 0 100 100" style="transform: rotate(-90deg);">
-                    <circle class="progress-ring-bg" cx="50" cy="50" r="40" />
-                    <circle class="progress-ring-circle" cx="50" cy="50" r="40" />
-                </svg>
-                <div class="health-score-text" aria-live="off" aria-atomic="false">84%</div>
-            </div>
-            <p>Next checkup: <strong>15 Aug 2025</strong></p>
-            <button class="zk-button" aria-label="View full health report">View Full Report</button>
-        </section>
+    <!-- RECENT CHAT -->
+    <section class="card" aria-label="Recent chat activity">
+      <h2>Recent Chat Activity</h2>
+      <p><em>“Can I drink wine with my antibiotics?”</em> – Answered <span class="chat-time">· 2 days ago</span></p>
+      <button type="button" class="zk-button" aria-label="Continue recent chat">Continue Chat</button>
+    </section>
+  </main>
 
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 ZK-Medibot. All rights reserved.</p>
+  </footer>
 
-        <!--- NOTIFICATIONS CARD --------------------------------->
-        <section class="card notifications" data-count="2" aria-live="polite" aria-atomic="true">
-            <h2>Notifications</h2>
-            <ul>
-                <li><span class="alert-dot" aria-hidden="true"></span> <strong>Reminder:</strong> Update your medication
-                    list. <button onclick="dismissNotif(this)"
-                        aria-label="Dismiss reminder notification">Dismiss</button></li>
-                <li class="alert"><span class="alert-dot" aria-hidden="true"></span> <strong>Alert:</strong> New vaccine
-                    schedule
-                    available. <button onclick="dismissNotif(this)"
-                        aria-label="Dismiss alert notification">Dismiss</button></li>
-            </ul>
-            <button id="resetNotifBtn" aria-label="Reset all notifications">Reset Notifications</button>
-        </section>
-
-        <!-- RECENT CHAT CARD ----------------------------------->
-        <section class="card" aria-label="Recent chat activity">
-            <h2>Recent Chat Activity</h2>
-            <p><em>“Can I drink wine with my antibiotics?”</em> – Answered <span class="chat-time">· 2 days ago</span>
-            </p>
-            <button class="zk-button" aria-label="Continue recent chat">Continue Chat</button>
-        </section>
-
-    </main>
-
-    <!---FOOTER---------------------------------->
-    <footer>
-        <p>© 2025 ZK-Medibot. All rights reserved.</p>
-    </footer>
-
-    <script src="js/main.js"></script>
-
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
 </body>
 
 </html>

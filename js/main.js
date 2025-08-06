@@ -1,117 +1,82 @@
-window.onload = () => {
-  // Hide dismissed notifications saved in localStorage
-  const dismissed = JSON.parse(localStorage.getItem('dismissedNotifs') || '[]');
-  dismissed.forEach(text => {
-    document.querySelectorAll('.notifications li').forEach(li => {
-      if (li.textContent.includes(text)) {
-        li.style.display = 'none';
-      }
-    });
-  });
-
-  updateNotificationCount();
-
-  // Setup fade-in on scroll animations for cards
-  setupFadeInOnScroll();
-
-  // Attach event listener to reset button inside onload to ensure element exists
-  const resetBtn = document.getElementById('resetNotifBtn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', resetNotifications);
-  }
-
-  // Setup sticky nav shadow toggling on scroll
-  const nav = document.querySelector('.main-nav');
-  if (nav) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        nav.classList.add('sticky-active');
-      } else {
-        nav.classList.remove('sticky-active');
-      }
-    });
-  }
-
-  // *** NEW: Update Health Ring Progress ***
+document.addEventListener('DOMContentLoaded', () => {
+  // Health ring animation
   const circle = document.querySelector('.progress-ring-circle');
-  if (circle) {
-    const radius = circle.r.baseVal.value; // usually 40
-    const circumference = 2 * Math.PI * radius;
-    circle.style.strokeDasharray = `${circumference}`;
-    circle.style.strokeDashoffset = `${circumference}`; // start at 0%
+  const radius = circle.r.baseVal.value;
+  const circumference = 2 * Math.PI * radius;
+  const healthScoreText = document.getElementById('healthScoreText');
 
-    function setProgress(percent) {
-      const offset = circumference - (percent / 100) * circumference;
-      circle.style.strokeDashoffset = offset;
-    }
+  circle.style.strokeDasharray = `${circumference} ${circumference}`;
+  circle.style.strokeDashoffset = circumference;
 
-    const healthScoreText = document.querySelector('.health-score-text');
-    let healthPercent = 84; // default fallback
-    if (healthScoreText) {
-      const text = healthScoreText.textContent.trim().replace('%', '');
-      const parsed = parseInt(text, 10);
-      if (!isNaN(parsed)) healthPercent = parsed;
-    }
-
-    setProgress(healthPercent);
+  // Animate health score ring
+  function setProgress(percent) {
+    const offset = circumference - (percent / 100) * circumference;
+    circle.style.strokeDashoffset = offset;
+    healthScoreText.textContent = `${percent}%`;
   }
-};
 
-// Dismiss notification handler (called inline)
-function dismissNotif(btn) {
-  const li = btn.parentElement;
+  // Animate from 0 to 75
+  let currentPercent = 0;
+  const targetPercent = 75;
+  const animationDuration = 2000;
+  const intervalDuration = 20;
+  const step = (targetPercent / (animationDuration / intervalDuration));
 
-  // Add fade-out class for smooth transition
-  li.classList.add('fade-out');
+  const progressInterval = setInterval(() => {
+    currentPercent += step;
+    if (currentPercent >= targetPercent) {
+      currentPercent = targetPercent;
+      clearInterval(progressInterval);
+    }
+    setProgress(Math.round(currentPercent));
+  }, intervalDuration);
 
-  // Disable button immediately to prevent multiple clicks
-  btn.disabled = true;
+  // Notifications dismiss function
+  window.dismissNotif = function (btn) {
+    const li = btn.closest('li');
+    if (!li) return;
+    li.classList.add('fade-out');
+    li.setAttribute('aria-hidden', 'true');
+    // Update notifications count attribute after fade-out
+    setTimeout(() => {
+      li.style.display = 'none';
+      updateNotificationCount();
+    }, 400);
+  };
 
-  // After fade-out transition ends, hide completely and save dismissal
-  li.addEventListener('transitionend', () => {
-    li.style.display = 'none';
+  // Update notification count on the notifications section
+  function updateNotificationCount() {
+    const notifSection = document.querySelector('.notifications');
+    const visibleNotifs = notifSection.querySelectorAll('li:not([aria-hidden="true"])');
+    notifSection.setAttribute('data-count', visibleNotifs.length);
+  }
 
-    // Save dismissed notification text
-    const dismissed = JSON.parse(localStorage.getItem('dismissedNotifs') || '[]');
-    dismissed.push(li.textContent.replace('Dismiss', '').trim());
-    localStorage.setItem('dismissedNotifs', JSON.stringify(dismissed));
-
+  // Reset notifications button functionality
+  const resetBtn = document.getElementById('resetNotifBtn');
+  resetBtn.addEventListener('click', () => {
+    const notifSection = document.querySelector('.notifications');
+    const allNotifs = notifSection.querySelectorAll('li');
+    allNotifs.forEach(li => {
+      li.classList.remove('fade-out');
+      li.style.display = '';
+      li.removeAttribute('aria-hidden');
+    });
     updateNotificationCount();
-  }, { once: true }); // only once per dismissal
-}
-
-// Reset notifications: clear localStorage and show all notifications again
-function resetNotifications() {
-  localStorage.removeItem('dismissedNotifs');
-
-  document.querySelectorAll('.notifications li').forEach(li => {
-    li.style.display = 'list-item';
-    li.classList.remove('fade-out');
-    const btn = li.querySelector('button');
-    if (btn) btn.disabled = false;
   });
 
-  updateNotificationCount();
-}
+  // Sticky nav bar on scroll
+  const nav = document.querySelector('.main-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      nav.classList.add('sticky-active');
+    } else {
+      nav.classList.remove('sticky-active');
+    }
+  });
 
-// Update the notification count badge attribute
-function updateNotificationCount() {
-  const notificationsSection = document.querySelector('.notifications');
-  const visibleNotifs = [...document.querySelectorAll('.notifications li')].filter(li => li.style.display !== 'none');
-  notificationsSection.setAttribute('data-count', visibleNotifs.length);
-}
-
-// Setup fade-in animation on scroll using IntersectionObserver
-function setupFadeInOnScroll() {
+  // Fade in cards sequentially
   const cards = document.querySelectorAll('.card');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  cards.forEach(card => observer.observe(card));
-}
+  cards.forEach((card, i) => {
+    setTimeout(() => card.classList.add('fade-in'), i * 350);
+  });
+});
