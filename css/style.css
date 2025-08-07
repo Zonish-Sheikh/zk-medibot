@@ -417,3 +417,65 @@ footer {
     width: 100%;
   }
 }
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Vault item: animate entry */
+.vault-list li {
+  animation: fadeInItem 0.4s ease forwards;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+@keyframes fadeInItem {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Delete button only visible on hover */
+.vault-list li button {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.vault-list li:hover button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Placeholder styling */
+input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Button improvement */
+.zk-button {
+  letter-spacing: 0.5px;
+}
+
+/* Footer hover */
+footer:hover {
+  color: var(--color-primary-dark);
+}
+
+/*dark mode prep */
+body.dark-mode {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+body.dark-mode header,
+body.dark-mode footer {
+  border-color: #334155;
+}
+body.dark-mode .card {
+  background-color: #1e293b;
+}
+

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Health Ring Animation (run only if elements exist)
+  // Health Ring Animation 
   const circle = document.querySelector('.progress-ring-circle');
   const healthScoreText = document.getElementById('healthScoreText');
 
@@ -71,23 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadListFromStorage(list, storageKey);
   }
 
-  function createListItem(text, list, storageKey) {
-    const li = document.createElement("li");
-    const spanText = document.createElement("span");
-    spanText.textContent = text;
-    li.appendChild(spanText);
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.addEventListener("click", () => {
-      list.removeChild(li);
-      saveListToStorage(list, storageKey);
-    });
-
-    li.appendChild(deleteBtn);
-    list.appendChild(li);
-  }
-
   function saveListToStorage(listElement, key) {
     const items = Array.from(listElement.children).map(li =>
       li.querySelector("span").textContent
@@ -104,4 +87,110 @@ document.addEventListener('DOMContentLoaded', () => {
   setupForm("medForm", "input", "medList", "medications");
   setupForm("allergyForm", "input", "allergyList", "allergies");
   setupForm("lifestyleForm", "input", "lifestyleList", "lifestyle");
+
+  // Reset notifications button
+  const resetNotifBtn = document.getElementById('resetNotifBtn');
+  if (resetNotifBtn) {
+    resetNotifBtn.addEventListener('click', () => {
+      const notifList = document.getElementById('notifList');
+      if (notifList) {
+        notifList.innerHTML = '';
+        localStorage.removeItem('notifications');
+      }
+    });
+  }
 });
+
+// Full createListItem function with Edit + Delete buttons & handlers
+function createListItem(text, list, storageKey) {
+  const li = document.createElement("li");
+  
+  const spanText = document.createElement("span");
+  spanText.textContent = text;
+  li.appendChild(spanText);
+
+  // Edit button
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.style.marginLeft = "8px";
+
+  // Delete button
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.style.marginLeft = "8px";
+
+  li.appendChild(editBtn);
+  li.appendChild(deleteBtn);
+  list.appendChild(li);
+
+  let isEditing = false;
+  let inputField;
+
+  editBtn.addEventListener("click", () => {
+    if (isEditing) return; // Prevent multiple edits at once
+
+    isEditing = true;
+    // Replace span with input
+    inputField = document.createElement("input");
+    inputField.type = "text";
+    inputField.value = spanText.textContent;
+    inputField.style.flex = "1";
+
+    li.insertBefore(inputField, spanText);
+    li.removeChild(spanText);
+
+    // Change Edit button to Save and add Cancel button
+    editBtn.textContent = "Save";
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.style.marginLeft = "8px";
+    li.insertBefore(cancelBtn, deleteBtn);
+
+    // Save handler
+    function saveEdit() {
+      const newValue = inputField.value.trim();
+      if (newValue) {
+        spanText.textContent = newValue;
+        li.insertBefore(spanText, inputField);
+        li.removeChild(inputField);
+        cleanup();
+        saveListToStorage(list, storageKey);
+      }
+    }
+
+    // Cancel handler
+    function cancelEdit() {
+      li.insertBefore(spanText, inputField);
+      li.removeChild(inputField);
+      cleanup();
+    }
+
+    // Cleanup after save or cancel
+    function cleanup() {
+      isEditing = false;
+      editBtn.textContent = "Edit";
+      cancelBtn.remove();
+      editBtn.removeEventListener("click", saveEdit);
+      cancelBtn.removeEventListener("click", cancelEdit);
+    }
+
+    editBtn.addEventListener("click", saveEdit);
+    cancelBtn.addEventListener("click", cancelEdit);
+
+    inputField.focus();
+
+    // Handle keyboard events
+    inputField.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        saveEdit();
+      } else if (e.key === "Escape") {
+        cancelEdit();
+      }
+    });
+  });
+
+  deleteBtn.addEventListener("click", () => {
+    list.removeChild(li);
+    saveListToStorage(list, storageKey);
+  });
+}

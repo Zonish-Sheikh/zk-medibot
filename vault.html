@@ -3,78 +3,96 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>ZK-MEDIBOT DASHBOARD</title>
-    <!--GOOGLE FONT LINK ------------------------->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZK-MEDIBOT | Vault</title>
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- THEME COLOR FOR BROWSER -->
+    <meta name="theme-color" content="#3b82f6" />
 </head>
+
 <body>
 
-    <!---HEADER---------------------------------->
+    <!-- HEADER -->
     <header>
         <h1>ZK-Medibot</h1>
         <p>Your Privacy-First Health Assistant</p>
     </header>
 
-    <!----NAV BAR---------------------------------->
-    <nav class="main-nav">
+    <!-- NAVIGATION -->
+    <nav class="main-nav" role="navigation" aria-label="Main Navigation">
         <ul>
             <li><a href="index.html">Dashboard</a></li>
             <li><a href="chat.html">Chat</a></li>
-            <li><a href="vault.html">Vault</a></li>
+            <li><a href="vault.html" aria-current="page">Vault</a></li>
             <li><a href="insights.html">Insights</a></li>
             <li><a href="settings.html">Settings</a></li>
             <li><a href="help.html">Help</a></li>
         </ul>
     </nav>
 
-    <!----MAIN CONTENT------------------------------->
-    <main>
+    <!-- MAIN CONTENT -->
+    <main class="vault-container">
         <h2>Vault</h2>
         <p>Securely manage your medical records and personal data here.</p>
 
-        <!-- Medications Section -------------------->
-        <section class="card vault-section">
-            <h3>Medications</h3>
-            <form id="medForm">
-                <input type="text" placeholder="Medication name" required/>
-                <input type="text" placeholder="Dosage (e.g. 5mg)" required/>
-                <input type="text" placeholder="Frequency (e.g. daily)" required/>
+        <!-- MEDICATIONS -->
+        <section class="card vault-section" aria-labelledby="medications-heading">
+            <h3 id="medications-heading">Medications</h3>
+            <form id="medForm" aria-label="Add medication">
+                <label>
+                    <input type="text" placeholder="Medication name" required aria-label="Medication name" />
+                </label>
+                <label>
+                    <input type="text" placeholder="Dosage (e.g. 5mg)" required aria-label="Dosage" />
+                </label>
+                <label>
+                    <input type="text" placeholder="Frequency (e.g. daily)" required aria-label="Frequency" />
+                </label>
                 <button type="submit" class="zk-button">Add Medication</button>
             </form>
-            <ul id="medList" class="vault-list"></ul>
+            <ul id="medList" class="vault-list" aria-live="polite"></ul>
         </section>
 
-        <!-- Allergies Section --------------------->
-        <section class="card vault-section">
-            <h3>Allergies</h3>
-            <form id="allergyForm">
-                <input type="text" placeholder="Allergy (e.g. peanuts)" required/>
+        <!-- ALLERGIES -->
+        <section class="card vault-section" aria-labelledby="allergies-heading">
+            <h3 id="allergies-heading">Allergies</h3>
+            <form id="allergyForm" aria-label="Add allergy">
+                <label>
+                    <input type="text" placeholder="Allergy (e.g. peanuts)" required aria-label="Allergy" />
+                </label>
                 <button type="submit" class="zk-button">Add Allergy</button>
             </form>
-            <ul id="allergyList" class="vault-list"></ul>
+            <ul id="allergyList" class="vault-list" aria-live="polite"></ul>
         </section>
 
-        <!-- Lifestyle Section --------------------->
-        <section class="card vault-section">
-            <h3>Lifestyle</h3>
-            <form id="lifestyleForm">
-                <input type="text" placeholder="Habit (e.g. smoking, exercise)" required/>
+        <!-- LIFESTYLE -->
+        <section class="card vault-section" aria-labelledby="lifestyle-heading">
+            <h3 id="lifestyle-heading">Lifestyle</h3>
+            <form id="lifestyleForm" aria-label="Add lifestyle habit">
+                <label>
+                    <input type="text" placeholder="Habit (e.g. smoking, exercise)" required
+                        aria-label="Lifestyle habit" />
+                </label>
                 <button type="submit" class="zk-button">Add Habit</button>
             </form>
-            <ul id="lifestyleList" class="vault-list"></ul>
+            <ul id="lifestyleList" class="vault-list" aria-live="polite"></ul>
         </section>
     </main>
 
-
-    <!---FOOTER---------------------------------->
+    <!-- FOOTER -->
     <footer>
         <p>© 2025 ZK-Medibot. All rights reserved.</p>
     </footer>
 
-     <!-- JavaScript ---------------------------->
-      <script src="js/main.js"></script>
+    <!-- SCRIPT -->
+    <script src="js/main.js"></script>
 
 </body>
+
 </html>
