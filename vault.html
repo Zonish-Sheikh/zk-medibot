@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZK-MEDIBOT DASHBOARD</title>
-  <link rel="stylesheet" href="css/style.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ZK-MEDIBOT DASHBOARD</title>
+    <!--GOOGLE FONT LINK ------------------------->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
     <!---HEADER---------------------------------->
-
     <header>
         <h1>ZK-Medibot</h1>
         <p>Your Privacy-First Health Assistant</p>
     </header>
-    
+
     <!----NAV BAR---------------------------------->
     <nav class="main-nav">
         <ul>
@@ -26,18 +28,53 @@
             <li><a href="help.html">Help</a></li>
         </ul>
     </nav>
-    
+
     <!----MAIN CONTENT------------------------------->
     <main>
         <h2>Vault</h2>
         <p>Securely manage your medical records and personal data here.</p>
-        <!-- WILL Add vault content here -->
+
+        <!-- Medications Section -------------------->
+        <section class="card vault-section">
+            <h3>Medications</h3>
+            <form id="medForm">
+                <input type="text" placeholder="Medication name" required/>
+                <input type="text" placeholder="Dosage (e.g. 5mg)" required/>
+                <input type="text" placeholder="Frequency (e.g. daily)" required/>
+                <button type="submit" class="zk-button">Add Medication</button>
+            </form>
+            <ul id="medList" class="vault-list"></ul>
+        </section>
+
+        <!-- Allergies Section --------------------->
+        <section class="card vault-section">
+            <h3>Allergies</h3>
+            <form id="allergyForm">
+                <input type="text" placeholder="Allergy (e.g. peanuts)" required/>
+                <button type="submit" class="zk-button">Add Allergy</button>
+            </form>
+            <ul id="allergyList" class="vault-list"></ul>
+        </section>
+
+        <!-- Lifestyle Section --------------------->
+        <section class="card vault-section">
+            <h3>Lifestyle</h3>
+            <form id="lifestyleForm">
+                <input type="text" placeholder="Habit (e.g. smoking, exercise)" required/>
+                <button type="submit" class="zk-button">Add Habit</button>
+            </form>
+            <ul id="lifestyleList" class="vault-list"></ul>
+        </section>
     </main>
 
-<!---FOOTER---------------------------------->
- <footer>
-    <p>© 2025 ZK-Medibot. All rights reserved.</p>
-</footer>
+
+    <!---FOOTER---------------------------------->
+    <footer>
+        <p>© 2025 ZK-Medibot. All rights reserved.</p>
+    </footer>
+
+     <!-- JavaScript ---------------------------->
+      <script src="js/main.js"></script>
 
 </body>
 </html>

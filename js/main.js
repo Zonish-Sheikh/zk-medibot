@@ -1,82 +1,107 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Health ring animation
+  // Health Ring Animation (run only if elements exist)
   const circle = document.querySelector('.progress-ring-circle');
-  const radius = circle.r.baseVal.value;
-  const circumference = 2 * Math.PI * radius;
   const healthScoreText = document.getElementById('healthScoreText');
 
-  circle.style.strokeDasharray = `${circumference} ${circumference}`;
-  circle.style.strokeDashoffset = circumference;
+  if (circle && healthScoreText) {
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = circumference;
 
-  // Animate health score ring
-  function setProgress(percent) {
-    const offset = circumference - (percent / 100) * circumference;
-    circle.style.strokeDashoffset = offset;
-    healthScoreText.textContent = `${percent}%`;
+    function setProgress(percent) {
+      const offset = circumference - (percent / 100) * circumference;
+      circle.style.strokeDashoffset = offset;
+    }
+
+    let progress = 0;
+    const target = 70;
+    const interval = setInterval(() => {
+      if (progress >= target) {
+        clearInterval(interval);
+      } else {
+        progress++;
+        setProgress(progress);
+        healthScoreText.textContent = progress + "%";
+      }
+    }, 20);
   }
 
-  // Animate from 0 to 75
-  let currentPercent = 0;
-  const targetPercent = 75;
-  const animationDuration = 2000;
-  const intervalDuration = 20;
-  const step = (targetPercent / (animationDuration / intervalDuration));
-
-  const progressInterval = setInterval(() => {
-    currentPercent += step;
-    if (currentPercent >= targetPercent) {
-      currentPercent = targetPercent;
-      clearInterval(progressInterval);
-    }
-    setProgress(Math.round(currentPercent));
-  }, intervalDuration);
-
-  // Notifications dismiss function
-  window.dismissNotif = function (btn) {
-    const li = btn.closest('li');
-    if (!li) return;
-    li.classList.add('fade-out');
-    li.setAttribute('aria-hidden', 'true');
-    // Update notifications count attribute after fade-out
+  // Notifications fade out after 5 seconds
+  const notification = document.querySelector('.notification');
+  if (notification) {
     setTimeout(() => {
-      li.style.display = 'none';
-      updateNotificationCount();
-    }, 400);
-  };
-
-  // Update notification count on the notifications section
-  function updateNotificationCount() {
-    const notifSection = document.querySelector('.notifications');
-    const visibleNotifs = notifSection.querySelectorAll('li:not([aria-hidden="true"])');
-    notifSection.setAttribute('data-count', visibleNotifs.length);
+      notification.style.opacity = 0;
+      setTimeout(() => notification.remove(), 500);
+    }, 5000);
   }
 
-  // Reset notifications button functionality
-  const resetBtn = document.getElementById('resetNotifBtn');
-  resetBtn.addEventListener('click', () => {
-    const notifSection = document.querySelector('.notifications');
-    const allNotifs = notifSection.querySelectorAll('li');
-    allNotifs.forEach(li => {
-      li.classList.remove('fade-out');
-      li.style.display = '';
-      li.removeAttribute('aria-hidden');
+  // Sticky navbar toggle on scroll
+  const nav = document.querySelector('nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('sticky', window.scrollY > 0);
     });
-    updateNotificationCount();
-  });
+  }
 
-  // Sticky nav bar on scroll
-  const nav = document.querySelector('.main-nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      nav.classList.add('sticky-active');
-    } else {
-      nav.classList.remove('sticky-active');
-    }
-  });
-
-  // Fade in cards sequentially
+  // Fade-in cards sequentially
   const cards = document.querySelectorAll('.card');
   cards.forEach((card, i) => {
     setTimeout(() => card.classList.add('fade-in'), i * 350);
   });
+
+  // Vault Forms setup function
+  function setupForm(formId, inputSelector, listId, storageKey) {
+    const form = document.getElementById(formId);
+    const list = document.getElementById(listId);
+    if (!form || !list) return; // Skip if not on vault page
+
+    const inputs = form.querySelectorAll(inputSelector);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const value = Array.from(inputs).map(input => input.value.trim()).filter(v => v).join(" - ");
+      if (value) {
+        createListItem(value, list, storageKey);
+        saveListToStorage(list, storageKey);
+        form.reset();
+      }
+    });
+
+    loadListFromStorage(list, storageKey);
+  }
+
+  function createListItem(text, list, storageKey) {
+    const li = document.createElement("li");
+    const spanText = document.createElement("span");
+    spanText.textContent = text;
+    li.appendChild(spanText);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", () => {
+      list.removeChild(li);
+      saveListToStorage(list, storageKey);
+    });
+
+    li.appendChild(deleteBtn);
+    list.appendChild(li);
+  }
+
+  function saveListToStorage(listElement, key) {
+    const items = Array.from(listElement.children).map(li =>
+      li.querySelector("span").textContent
+    );
+    localStorage.setItem(key, JSON.stringify(items));
+  }
+
+  function loadListFromStorage(listElement, key) {
+    const data = JSON.parse(localStorage.getItem(key)) || [];
+    data.forEach(item => createListItem(item, listElement, key));
+  }
+
+  // Initialize the vault forms only if they exist
+  setupForm("medForm", "input", "medList", "medications");
+  setupForm("allergyForm", "input", "allergyList", "allergies");
+  setupForm("lifestyleForm", "input", "lifestyleList", "lifestyle");
 });
