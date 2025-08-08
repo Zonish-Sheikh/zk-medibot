@@ -36,6 +36,16 @@
         </ul>
     </nav>
 
+    <!-- AUTH BAR (encryption) -->
+    <div id="vault-auth" role="region" aria-label="Vault authentication">
+        <label for="vaultPass" style="margin-right:6px">Vault password:</label>
+        <input id="vaultPass" type="password" placeholder="Enter password to unlock (session only)"
+            aria-label="Vault password">
+        <button id="unlockBtn">Unlock</button>
+        <button id="lockBtn" class="secondary" style="display:none">Lock</button>
+    </div>
+
+
     <!-- MAIN CONTENT -->
     <main class="vault-container">
         <h2>Vault</h2>
@@ -45,45 +55,51 @@
         <section class="card vault-section" aria-labelledby="medications-heading">
             <h3 id="medications-heading">Medications</h3>
             <form id="medForm" aria-label="Add medication">
-                <label>
-                    <input type="text" placeholder="Medication name" required aria-label="Medication name" />
-                </label>
-                <label>
-                    <input type="text" placeholder="Dosage (e.g. 5mg)" required aria-label="Dosage" />
-                </label>
-                <label>
-                    <input type="text" placeholder="Frequency (e.g. daily)" required aria-label="Frequency" />
-                </label>
+                <label><input type="text" placeholder="Medication name" required aria-label="Medication name" /></label>
+                <label><input type="text" placeholder="Dosage (e.g. 5mg)" required aria-label="Dosage" /></label>
+                <label><input type="text" placeholder="Frequency (e.g. daily)" required
+                        aria-label="Frequency" /></label>
                 <button type="submit" class="zk-button">Add Medication</button>
             </form>
-            <ul id="medList" class="vault-list" aria-live="polite"></ul>
+            <div id="medListWrapper">
+                <ul id="medList" class="vault-list" aria-live="polite"></ul>
+                <div id="medLocked" class="vault-locked-note" style="display:none">Medications are locked — enter
+                    password to view.</div>
+            </div>
         </section>
 
         <!-- ALLERGIES -->
         <section class="card vault-section" aria-labelledby="allergies-heading">
             <h3 id="allergies-heading">Allergies</h3>
             <form id="allergyForm" aria-label="Add allergy">
-                <label>
-                    <input type="text" placeholder="Allergy (e.g. peanuts)" required aria-label="Allergy" />
-                </label>
+                <label><input type="text" placeholder="Allergy (e.g. peanuts)" required aria-label="Allergy" /></label>
                 <button type="submit" class="zk-button">Add Allergy</button>
             </form>
-            <ul id="allergyList" class="vault-list" aria-live="polite"></ul>
+            <div id="allergyListWrapper">
+                <ul id="allergyList" class="vault-list" aria-live="polite"></ul>
+                <div id="allergyLocked" class="vault-locked-note" style="display:none">Allergies are locked — enter
+                    password to view.</div>
+            </div>
         </section>
 
         <!-- LIFESTYLE -->
         <section class="card vault-section" aria-labelledby="lifestyle-heading">
             <h3 id="lifestyle-heading">Lifestyle</h3>
             <form id="lifestyleForm" aria-label="Add lifestyle habit">
-                <label>
-                    <input type="text" placeholder="Habit (e.g. smoking, exercise)" required
-                        aria-label="Lifestyle habit" />
-                </label>
+                <label><input type="text" placeholder="Habit (e.g. smoking, exercise)" required
+                        aria-label="Lifestyle habit" /></label>
                 <button type="submit" class="zk-button">Add Habit</button>
             </form>
-            <ul id="lifestyleList" class="vault-list" aria-live="polite"></ul>
+            <div id="lifestyleListWrapper">
+                <ul id="lifestyleList" class="vault-list" aria-live="polite"></ul>
+                <div id="lifestyleLocked" class="vault-locked-note" style="display:none">Lifestyle data are locked —
+                    enter password to view.</div>
+            </div>
         </section>
     </main>
+
+    <!-- CryptoJS ------------------------ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
     <!-- FOOTER -->
     <footer>

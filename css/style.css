@@ -479,3 +479,31 @@ body.dark-mode .card {
   background-color: #1e293b;
 }
 
+/* Vault edit mode highlight */
+.vault-list li.editing {
+  background-color: #e0f2fe;
+  border-color: var(--color-primary);
+}
+
+/* Lock icon next to vault headings */
+.vault-section h3::after {
+  content: "🔒";
+  margin-left: 8px;
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+
+/* Dark mode for Vault elements */
+body.dark-mode .vault-list li {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+body.dark-mode .vault-section input[type="text"] {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+body.dark-mode .vault-list button {
+  color: #f87171; 
+}
