@@ -322,6 +322,7 @@ section h2 {
   box-shadow: 0 4px 10px var(--shadow-default);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
+  letter-spacing: 0.5px;
 }
 
 .zk-button:hover,
@@ -338,6 +339,10 @@ footer {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   user-select: none;
+}
+
+footer:hover {
+  color: var(--color-primary-dark);
 }
 
 /* RESPONSIVE */
@@ -364,6 +369,14 @@ footer {
   font-size: 1.4rem;
 }
 
+/* Lock icon next to vault headings */
+.vault-section h3::after {
+  content: "🔒";
+  margin-left: 8px;
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+
 /* Vault Forms */
 .vault-section form {
   display: flex;
@@ -378,6 +391,14 @@ footer {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.vault-section input[type="text"]:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  background-color: #f0f9ff;
 }
 
 /* Vault List Display */
@@ -396,114 +417,142 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  animation: fadeInItem 0.4s ease forwards;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.vault-list button {
-  background: transparent;
-  border: none;
+/* Animate fade and slight scale on entry */
+@keyframes fadeInItem {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Delete/Edit buttons only visible on hover */
+.vault-list li button {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, color 0.3s ease;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 4px 8px;
   color: #cc0000;
   font-size: 0.9rem;
   cursor: pointer;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .vault-section form {
-    flex-direction: column;
-  }
-
-  .vault-section input[type="text"],
-  .vault-section button {
-    width: 100%;
-  }
+.vault-list li:hover button {
+  opacity: 1;
+  pointer-events: auto;
+  color: var(--color-accent);
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.vault-list li button:hover {
+  color: var(--color-primary-dark);
+  background-color: rgba(245, 158, 11, 0.1);
 }
 
-/* Vault item: animate entry */
-.vault-list li {
-  animation: fadeInItem 0.4s ease forwards;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-@keyframes fadeInItem {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Locked vault message */
+.vault-locked-message {
+  background-color: #fee2e2;
+  border: 1.5px solid #f87171;
+  color: #b91c1c;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(185, 28, 28, 0.15);
 }
 
-/* Delete button only visible on hover */
-.vault-list li button {
+/* Vault auth section */
+#vault-auth {
+  margin-bottom: 2rem;
+}
+
+#vault-auth input[type="password"] {
+  flex: 1 1 220px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#vault-auth input[type="password"]:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  background-color: #f0f9ff;
+}
+
+#vault-auth button {
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px var(--shadow-default);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+
+#vault-auth button:hover,
+#vault-auth button:focus-visible {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 6px 15px var(--shadow-hover);
+  outline: none;
+}
+
+/* TOAST NOTIFICATION for localStorage saves */
+.toast-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
+  user-select: none;
+  font-weight: 600;
+  z-index: 10000;
 }
-.vault-list li:hover button {
+
+.toast-notification.show {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Placeholder styling */
-input::placeholder {
-  color: #9ca3af;
-  font-style: italic;
-}
+/* RESPONSIVE VAULT FORMS */
+@media (max-width: 600px) {
+  .vault-section form,
+  #vault-auth {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-/* Button improvement */
-.zk-button {
-  letter-spacing: 0.5px;
-}
-
-/* Footer hover */
-footer:hover {
-  color: var(--color-primary-dark);
-}
-
-/*dark mode prep */
-body.dark-mode {
-  background-color: #0f172a;
-  color: #e2e8f0;
-}
-body.dark-mode header,
-body.dark-mode footer {
-  border-color: #334155;
-}
-body.dark-mode .card {
-  background-color: #1e293b;
-}
-
-/* Vault edit mode highlight */
-.vault-list li.editing {
-  background-color: #e0f2fe;
-  border-color: var(--color-primary);
-}
-
-/* Lock icon next to vault headings */
-.vault-section h3::after {
-  content: "🔒";
-  margin-left: 8px;
-  font-size: 1rem;
-  color: var(--color-primary);
-}
-
-/* Dark mode for Vault elements */
-body.dark-mode .vault-list li {
-  background-color: #1e293b;
-  border-color: #334155;
-  color: #e2e8f0;
-}
-body.dark-mode .vault-section input[type="text"] {
-  background-color: #1e293b;
-  border-color: #334155;
-  color: #e2e8f0;
-}
-body.dark-mode .vault-list button {
-  color: #f87171; 
+  .vault-section input[type="text"],
+  #vault-auth input[type="password"],
+  .vault-section button.zk-button,
+  #vault-auth button {
+    width: 100%;
+    margin-left: 0 !important;
+  }
 }
