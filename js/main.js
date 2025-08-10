@@ -56,17 +56,55 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => card.classList.add('fade-in'), i * 350);
   });
 
-  // Auto-lock after 3 minute inactivity
-  const inactivityTime = 180000; 
+  // Auto-lock after 3 minute inactivity with 10 seconds countdown
+  const inactivityTime = 180000;  // 3 minutes total
   let inactivityTimer;
+  let countdownTimer;
+  let countdownValue = 10;
+
+  // Create countdown display element dynamically
+  let countdownDisplay = document.getElementById('countdownDisplay');
+  if (!countdownDisplay) {
+    countdownDisplay = document.createElement('div');
+    countdownDisplay.id = 'countdownDisplay';
+    countdownDisplay.style.position = 'fixed';
+    countdownDisplay.style.bottom = '20px';
+    countdownDisplay.style.right = '20px';
+    countdownDisplay.style.padding = '10px 15px';
+    countdownDisplay.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    countdownDisplay.style.color = 'white';
+    countdownDisplay.style.fontSize = '16px';
+    countdownDisplay.style.borderRadius = '5px';
+    countdownDisplay.style.zIndex = '1000';
+    countdownDisplay.style.display = 'none';
+    document.body.appendChild(countdownDisplay);
+  }
+
+  function startCountdown() {
+    countdownValue = 10;
+    countdownDisplay.textContent = `Auto-lock in ${countdownValue} seconds`;
+    countdownDisplay.style.display = 'block';
+
+    countdownTimer = setInterval(() => {
+      countdownValue--;
+      if (countdownValue <= 0) {
+        clearInterval(countdownTimer);
+        countdownDisplay.style.display = 'none';
+        alert('Vault auto-locked due to inactivity.');
+        lockBtn.click();
+      } else {
+        countdownDisplay.textContent = `Auto-lock in ${countdownValue} seconds`;
+      }
+    }, 1000);
+  }
 
   function resetInactivityTimer() {
     clearTimeout(inactivityTimer);
+    clearInterval(countdownTimer);
+    countdownDisplay.style.display = 'none';
     if (isUnlocked()) {
-      console.log('Inactivity timer reset');
       inactivityTimer = setTimeout(() => {
-        alert('Vault auto-locked due to inactivity.');
-        lockBtn.click();
+        startCountdown();
       }, inactivityTime);
     }
   }
@@ -108,6 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
     unlockBtn.style.display = '';
     lockBtn.style.display = 'none';
     clearTimeout(inactivityTimer);
+    clearInterval(countdownTimer);
+    countdownDisplay.style.display = 'none';
   });
 
   // Vault Forms setup function
